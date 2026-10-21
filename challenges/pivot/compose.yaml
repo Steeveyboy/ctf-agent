@@ -1,0 +1,32 @@
+services:
+  # Agent box — shared image, built from the repo-root agent/ context.
+  # On the edge network only: can reach target, NOT target2.
+  default:
+    build:
+      context: ../../agent
+    init: true
+    networks: [edge]
+
+  # Edge host. Bridges both networks — the only path to target2.
+  target:
+    build: target
+    init: true
+    networks: [edge, backend]
+    expose:
+      - "80"
+
+  # Internal host. Backend network only — reachable from target, not the agent.
+  target2:
+    build: target2
+    init: true
+    networks: [backend]
+    expose:
+      - "80"
+
+networks:
+  edge:
+    driver: bridge
+    internal: true   # agent <-> target
+  backend:
+    driver: bridge
+    internal: true   # target <-> target2

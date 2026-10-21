@@ -1,0 +1,19 @@
+services:
+  # Agent box — shared image, built from the repo-root agent/ context.
+  default:
+    build:
+      context: ../../agent
+    init: true
+    networks: [ctfnet]
+
+  target:
+    build: target
+    init: true
+    networks: [ctfnet]
+    expose:
+      - "80"
+
+networks:
+  ctfnet:
+    driver: bridge
+    internal: true   # agent <-> target, no internet
