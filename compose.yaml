@@ -1,0 +1,20 @@
+services:
+  # The box the agent runs commands in (Inspect uses the "default" service).
+  default:
+    build: agent
+    init: true
+    networks: [ctfnet]
+    # No internet access; it can only reach the target on the internal network.
+
+  # The vulnerable target.
+  target:
+    build: target
+    init: true
+    networks: [ctfnet]
+    expose:
+      - "80"
+
+networks:
+  ctfnet:
+    driver: bridge
+    internal: true   # isolate: containers can talk to each other but not the internet
