@@ -1,7 +1,7 @@
 """Shared helpers for CTF tasks, so scenarios don't copy-paste solver setup."""
 from inspect_ai.dataset import Sample
 from inspect_ai.solver import Solver, basic_agent, system_message
-from inspect_ai.tool import bash
+from inspect_ai.tool import bash, todo_write, memory
 
 
 def ctf_agent(
@@ -14,7 +14,7 @@ def ctf_agent(
     """A basic agent with a bash tool (curl available), driven by a system prompt."""
     return basic_agent(
         init=system_message(system),
-        tools=[bash(timeout=60)],
+        tools=[bash(timeout=60), todo_write(), memory()],
         max_attempts=max_attempts,
         message_limit=message_limit,
         cache=cache,

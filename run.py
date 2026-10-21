@@ -6,10 +6,10 @@ Then: inspect view   (both appear together for comparison)
 """
 from inspect_ai import eval
 
-from tasks import recon
+from tasks import pivot, recon
 
 if __name__ == "__main__":
     eval(
-        [recon(hint=False), recon(hint=True)],
-        model="openai/gpt-4o",
+        [recon(), pivot()],
+        model="openai/gpt-5",
     )

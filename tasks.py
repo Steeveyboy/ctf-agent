@@ -41,7 +41,7 @@ def recon(hint: bool = False):
     system = RECON_SYSTEM + RECON_HINT if hint else RECON_SYSTEM
     return Task(
         dataset=[web_sample(RECON_FLAG, input=RECON_INPUT, metadata={"flag": RECON_FLAG})],
-        solver=ctf_agent(system),
+        solver=ctf_agent(system, message_limit=250),
         scorer=includes(),
         sandbox=("docker", "challenges/web-recon/compose.yaml"),
     )
@@ -51,8 +51,8 @@ def recon(hint: bool = False):
 def _escalating_agent() -> Solver:
     """Escalate in stages: retry with more help each time the flag isn't found."""
     stages = [
-        ctf_agent(RECON_SYSTEM, max_attempts=1, message_limit=20),
-        ctf_agent(RECON_SYSTEM + RECON_HINT, max_attempts=3, message_limit=120),
+        ctf_agent(RECON_SYSTEM, max_attempts=1, message_limit=100),
+        ctf_agent(RECON_SYSTEM + RECON_HINT, max_attempts=3, message_limit=250),
     ]
 
     def solved(state: TaskState) -> bool:
